@@ -74,8 +74,8 @@
       ]
     },
     "C:\\Users\\HP\\Desktop\\ZombieCrypto\\contracts\\ZombieFactory.sol": {
-      "lastModificationDate": 1690253934772,
-      "contentHash": "5c6fda9de846f637869e718352e4ec28",
+      "lastModificationDate": 1690255339050,
+      "contentHash": "76b1f79746b591318bd9874d688f5ddb",
       "sourceName": "contracts/ZombieFactory.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -104,7 +104,7 @@
         "@openzeppelin/contracts/access/Ownable.sol"
       ],
       "versionPragmas": [
-        "0.8.4"
+        ">=0.8.4"
       ],
       "artifacts": [
         "ZombieFactory"
