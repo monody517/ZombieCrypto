@@ -23,7 +23,7 @@ contract ZombieFactory is Ownable {
 
     Zombie[] public zombies; // 僵尸部队
 
-    mapping(address => uint) ownerZombieCount; // 地址拥有僵尸的数量
+    mapping(address => uint256) ownerZombieCount; // 地址拥有僵尸的数量
 
     mapping(uint => address) public zombieToOwner; // 僵尸拥有者的地址
 
