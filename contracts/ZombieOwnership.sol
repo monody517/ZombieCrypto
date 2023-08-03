@@ -2,24 +2,80 @@
 pragma solidity >=0.8.4;
 import "./ZombieAttack.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-contract ZombieOwnership is ZombieAttack, IERC721 {
+contract ZombieOwnership is ZombieAttack, IERC721, IERC721Metadata {
+    string private _name; //  NFT 名称
+    string private _symbol; //  NFT 符号
+    string private _baseURI; //  NFT 的基础 MetadataURI
+    mapping(uint256 => string) private _tokenURIs; //  NFT 元数据  NFT id => 元数据
     mapping(uint => address) zombieApprovals;
     mapping(address => mapping(address => bool)) public operatorApprovals; // 授权所有 NFT 的账本  NFT 持有者 => 被授权者 => 是否授权
 
     using SafeMath for uint256;
 
-    // balanceOf：返回某地址的NFT持有量balance。√√√√
-    // ownerOf：返回某tokenId的主人owner。√√√√
-    // approve：授权另一个地址使用你的NFT。参数为被授权地址approve和tokenId。√√√√
+    // balanceOf：返回某地址的NFT持有量balance。
+    // ownerOf：返回某tokenId的主人owner。
+    // approve：授权另一个地址使用你的NFT。参数为被授权地址approve和tokenId。
     // transferFrom：普通转账，参数为转出地址from，接收地址to和tokenId。
     // safeTransferFrom：安全转账（如果接收方是合约地址，会要求实现ERC721Receiver接口）。参数为转出地址from，接收地址to和tokenId。
     // safeTransferFrom：安全转账的重载函数，参数里面包含了data。
     // getApproved：查询tokenId被批准给了哪个地址。
     // setApprovalForAll：将自己持有的该系列NFT批量授权给某个地址operator。
     // isApprovedForAll：查询某地址的NFT是否批量授权给了另一个operator地址。
+
+    // 构造函数
+    constructor(
+        string memory initName,
+        string memory initSymbol,
+        string memory baseURI
+    ) {
+        _name = initName;
+        _symbol = initSymbol;
+        _baseURI = baseURI;
+    }
+
+    // 检查合约是否实现了某个接口
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public pure override returns (bool) {
+        return
+            interfaceId == type(IERC721).interfaceId ||
+            interfaceId == type(IERC721Metadata).interfaceId ||
+            interfaceId == type(IERC165).interfaceId;
+    }
+
+    // 查询 NFT 名称
+    function name() public view override returns (string memory) {
+        return _name;
+    }
+
+    // 查询 NFT 符号
+    function symbol() public view override returns (string memory) {
+        return _symbol;
+    }
+
+    // 检查某个 NFT 是否存在
+    function _exists(uint256 tokenId) internal view virtual returns (bool) {
+        return zombieToOwner[tokenId] != address(0);
+    }
+
+    // 查询 NFT 的 MetadataURI
+    function tokenURI(
+        uint256 tokenId
+    ) public view virtual override returns (string memory) {
+        require(
+            _exists(tokenId),
+            "ERC721Metadata: URI query for nonexistent token"
+        );
+
+        return
+            bytes(_baseURI).length > 0
+                ? string(abi.encodePacked(_baseURI, _tokenURIs[tokenId]))
+                : "";
+    }
 
     // 返回_owner地址的僵尸数量
     function balanceOf(
