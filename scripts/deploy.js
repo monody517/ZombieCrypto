@@ -15,7 +15,31 @@ async function main() {
       // 执行部署
     await zombieOwnership.deployed();
     // 打印一下部署的结果
-    console.log("ZombieOwnership deployed to:", zombieOwnership.address);
+  console.log("ZombieOwnership deployed to:", zombieOwnership.address);
+  saveFrontendFiles(zombieOwnership);
+}
+
+function saveFrontendFiles(counter) {
+  const fs = require("fs");
+  const contractsDir = "./data";
+
+  if (!fs.existsSync(contractsDir)) {
+    fs.mkdirSync(contractsDir);
+  }
+
+  fs.writeFileSync(
+    contractsDir + "/contract-address.json",
+    JSON.stringify({
+      Counter: counter.address
+    }, undefined, 2)
+  );
+
+  const ZombieOwnershipArtifact = artifacts.readArtifactSync("ZombieOwnership");
+
+  fs.writeFileSync(
+    contractsDir + "/ZombieOwnership.json",
+    JSON.stringify(ZombieOwnershipArtifact, null, 2)
+  );
 }
 
 main()

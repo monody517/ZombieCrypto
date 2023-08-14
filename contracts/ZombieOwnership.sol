@@ -27,15 +27,15 @@ contract ZombieOwnership is ZombieAttack, IERC721, IERC721Metadata {
     // isApprovedForAll：查询某地址的NFT是否批量授权给了另一个operator地址。
 
     // 构造函数
-    constructor(
-        string memory initName,
-        string memory initSymbol,
-        string memory baseURI
-    ) {
-        _name = initName;
-        _symbol = initSymbol;
-        _baseURI = baseURI;
-    }
+    // constructor(
+    //     string memory initName,
+    //     string memory initSymbol,
+    //     string memory baseURI
+    // ) {
+    //     _name = initName;
+    //     _symbol = initSymbol;
+    //     _baseURI = baseURI;
+    // }
 
     // 检查合约是否实现了某个接口
     function supportsInterface(
