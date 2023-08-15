@@ -43,6 +43,10 @@ contract ZombieFactory is Ownable {
         return zombies;
     }
 
+    function getZombieNUm() public view returns (uint) {
+        return zombies.length;
+    }
+
     // 根据字符串随机生成dna
     function _generateRandomDna(
         string memory _str
