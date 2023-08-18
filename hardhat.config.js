@@ -11,8 +11,6 @@ task("accounts", "Prints the list of accounts", async () => {
   }
 });
 
-const API_KEY = "fb99bc833a2041c1b84fcb50dafeaf03";
-const PRIVATE_KEY = "0x8bffcd85354e88ca03da14532f1cd18b5b92d34202143212ab1c1cc520d19b80";
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   abiExporter: {
@@ -26,7 +24,6 @@ module.exports = {
   networks: {
     ganache: {
       url: 'HTTP://127.0.0.1:7545',
-      accounts: [PRIVATE_KEY],
     }
     // goerli: {
     //   url: `https://goerli.infura.io/v3/${API_KEY}`,
